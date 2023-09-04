@@ -1,6 +1,5 @@
 from fractions import Fraction
 import numpy as np
-import math
 """pseudo code
 
 get terminal_state_indecies
@@ -25,7 +24,8 @@ matr = [
 ]
 
 def solution(m):
-    
+
+    m = map(int, m)
     m = np.array(m)
     
     terminal_state_indecies = []
@@ -83,6 +83,10 @@ def convert_to_common_denominator_format(terminal_state_probs):
     res.append(common_denominator)
     
     return list(map(int,res))
+    
+def lcm(*args):
+    for x in args:
+        
   
 print(solution(matr))
 
