@@ -24,16 +24,15 @@ matr = [
 ]
 
 def solution(m):
-
-    m = map(int, m)
-    m = np.array(m)
+    
+    m = np.array(m, dtype=np.float64)
     
     terminal_state_indecies = []
     
     for i, v in enumerate(m):
         if sum(v) == 0:
             terminal_state_indecies.append(i)
-            
+    
     probs = get_state_probabilities(m)
     
     terminal_state_probs = [probs[i] for i in terminal_state_indecies]
@@ -44,19 +43,19 @@ def get_state_probabilities(m):
     
     mfrac = to_fraction_matrix(m)
     
-    startvec = np.zeros(len(m))
+    startvec = np.zeros(len(m), dtype=np.float64)
     startvec[0] = 1
     
-    probs = np.zeros(len(m))
+    probs = np.zeros(len(m), dtype=np.float64)
     
     temp = np.copy(mfrac)
     
-    iterations = 32 #the higher, the preciser
+    iterations = 10000 #the higher, the preciser
     
-    for i in range(iterations):
+    for _ in range(iterations):
         probs += np.dot(startvec.T, temp)
         temp = np.dot(temp, mfrac)
-    
+        
     return [Fraction(x).limit_denominator() for x in probs]
     
 def to_fraction_matrix(m):
@@ -64,30 +63,28 @@ def to_fraction_matrix(m):
 
     for v in m:
         vsum = v.sum()
+        
         if vsum == 0:
             mfrac.append([0]*len(m))
             continue
-        mfrac.append(v/v.sum())
+        
+        mfrac.append(v/float(vsum))
     
-    return np.array(mfrac)
+    return np.array(mfrac, dtype=np.float64)
   
 def convert_to_common_denominator_format(terminal_state_probs):
   
-    common_denominator = math.lcm(*map(lambda x: x.denominator, terminal_state_probs))
+    common_denominator = np.lcm.reduce(list(map(lambda x: x.denominator, terminal_state_probs)))
     
     res = []
     
     for frac in terminal_state_probs:
         res.append(frac.numerator*common_denominator // frac.denominator)
-    
+
     res.append(common_denominator)
-    
+
     return list(map(int,res))
-    
-def lcm(*args):
-    for x in args:
         
   
 print(solution(matr))
-
 # print(convert_to_common_denominator_format([Fraction(0, 1), Fraction(3, 14), Fraction(1, 7), Fraction(9, 14)]))
