@@ -14,13 +14,39 @@ return max bunnies
 """
 
 def solution(times, times_limit):
-  numBunnies = len(times)-2
+  num_bunnies = len(times)-2
+  bunny_list = list(range(num_bunnies))
   # todo detect negative loops
   fwm = create_floyd_warshall_matrix(times)
   
+  def get_max_bunny_path(current_cost = 0, traversed_bunnies=[]):
+    
+    past_index = 0 if traversed_bunnies == [] \
+      else 1 + traversed_bunnies[len(traversed_bunnies)-1]
+    
+    if fwm[past_index][len(times)-1]+current_cost>times_limit:
+      return []
+    
+    if set(traversed_bunnies) == set(bunny_list):
+      return bunny_list
+    
+    maxBunnies = []
+    
+    for bunny in set(bunny_list)-set(traversed_bunnies):
+      
+      next_traversed = traversed_bunnies[:]
+      next_traversed.append(bunny)
+      
+      traverse_cost = fwm[past_index][bunny+1]
+      
+      recPath = get_max_bunny_path(current_cost+traverse_cost, next_traversed)
+      
+      if len(recPath) > len(maxBunnies):
+        maxBunnies = recPath
+      
+    return maxBunnies
   
-  
-  pass
+  return get_max_bunny_path()
 
 def create_floyd_warshall_matrix(m):
   res = copy.deepcopy(m)
@@ -33,5 +59,4 @@ def create_floyd_warshall_matrix(m):
   return res
 
 
-print(create_floyd_warshall_matrix([[0, 2, 2, 2, -1], [9, 0, 2, 2, -1], [9, 3, 0, 2, -1], [9, 3, 2, 0, -1], [9, 3, 2, 2, 0]]))
-    
+print(solution([[0, 2, 2, 2, -1], [9, 0, 2, 2, -1], [9, 3, 0, 2, -1], [9, 3, 2, 0, -1], [9, 3, 2, 2, 0]], 1))
