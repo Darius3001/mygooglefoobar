@@ -24,8 +24,9 @@ matr = [
 ]
 
 def solution(m):
-    
-    m = np.array(m, dtype=np.float64)
+    if not np.any(m):
+        return [0]*(len(m)+1)
+    m = np.array(m, dtype=np.float128)
     
     terminal_state_indecies = []
     
@@ -87,4 +88,5 @@ def convert_to_common_denominator_format(terminal_state_probs):
         
   
 print(solution(matr))
+print(solution([[0]]))
 # print(convert_to_common_denominator_format([Fraction(0, 1), Fraction(3, 14), Fraction(1, 7), Fraction(9, 14)]))
