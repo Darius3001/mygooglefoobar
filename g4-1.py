@@ -46,7 +46,7 @@ def solution(times, times_limit):
       if len(recPath) > len(maxBunnies):
         maxBunnies = recPath
       
-    return maxBunnies
+    return sorted(maxBunnies)
   
   return get_max_bunny_path()
 
