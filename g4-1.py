@@ -19,6 +19,9 @@ def solution(times, times_limit):
   # todo detect negative loops
   fwm = create_floyd_warshall_matrix(times)
   
+  if has_negative_loop(fwm):
+    return bunny_list
+  
   # fixme: not really returning anything
   def get_max_bunny_path(current_cost = 0, traversed_bunnies=[]):
     
@@ -64,5 +67,11 @@ def create_floyd_warshall_matrix(m):
         
   return res
 
+def has_negative_loop(fwm):
+  for i in range(len(fwm)):
+    if fwm[i][i] < 0:
+      return True
+    
+  return False
 
 print(solution([[0, 2, 2, 2, -1], [9, 0, 2, 2, -1], [9, 3, 0, 2, -1], [9, 3, 2, 0, -1], [9, 3, 2, 2, 0]], 1))
