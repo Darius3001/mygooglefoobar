@@ -16,28 +16,26 @@ return max bunnies
 def solution(times, times_limit):
   num_bunnies = len(times)-2
   bunny_list = list(range(num_bunnies))
-  # todo detect negative loops
+  
   fwm = create_floyd_warshall_matrix(times)
   
   if has_negative_loop(fwm):
     return bunny_list
   
-  # fixme: not really returning anything
   def get_max_bunny_path(current_cost = 0, traversed_bunnies=[]):
     
     past_index = 0 if traversed_bunnies == [] \
       else 1 + traversed_bunnies[len(traversed_bunnies)-1]
     
     if fwm[past_index][len(times)-1]+current_cost>times_limit:
-      return None
+      return []
     
     if set(traversed_bunnies) == set(bunny_list):
       return bunny_list
     
-    maxBunnies = None
+    maxBunnies = traversed_bunnies
     
     for bunny in set(bunny_list)-set(traversed_bunnies):
-      print(bunny)
       next_traversed = traversed_bunnies[:]
       next_traversed.append(bunny)
       
@@ -45,13 +43,8 @@ def solution(times, times_limit):
       
       recPath = get_max_bunny_path(current_cost+traverse_cost, next_traversed)
       
-      if recPath == None:
-        continue
-      
-      print(recPath, current_cost)
-      
-      if maxBunnies == None or len(next_traversed) > len(maxBunnies):
-        maxBunnies = next_traversed
+      if len(recPath) > len(maxBunnies):
+        maxBunnies = recPath
       
     return maxBunnies
   
