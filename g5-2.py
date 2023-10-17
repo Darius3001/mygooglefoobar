@@ -6,7 +6,7 @@ def solution(g):
     # matrix will be viewed as list of columns (not rows)
     g = np.array(g).T
     
-    columnlen, rowlen = g.shape
+    rowlen, columnlen = g.shape
     
     possible_columns = list(itertools.product([True,False], repeat=columnlen+1))
     
@@ -50,4 +50,4 @@ def isColumnValid(generatedPastColumn, previousPastColumn, currentColumn):
         
     return True
 
-print(solution([[True,False,True],[False,True,False],[True,False,True]]))
+print(solution([[True, True, False, True, False, True, False, True, True, False], [True, True, False, False, False, False, True, True, True, False], [True, True, False, False, False, False, False, False, False, True], [False, True, False, False, False, False, True, True, False, False]]))
