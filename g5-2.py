@@ -6,35 +6,40 @@ def solution(g):
     # matrix will be viewed as list of columns (not rows)
     g = np.array(g).T
     
-    rowlen = len(g)
-    columnlen = len(g[0])
+    columnlen, rowlen = g.shape
     
     possible_columns = list(itertools.product([True,False], repeat=columnlen+1))
     
-    previous_columns = {col:1 for col in possible_columns}
+    solutioncount_previous_columns = {col:1 for col in possible_columns}
 
     for i in range(rowlen):
-        current_columns = {}
-        for column in possible_columns:
-            for previous_column, previous_n in previous_columns.iteritems():
-                if isColumnValid(column, previous_column, g[i]):
-                    new_n = previous_n
-                    new_n += current_columns[column] if column in current_columns else 0
-                    current_columns[column] = new_n
-        previous_columns = current_columns
         
-    return sum(previous_columns.values())
+        solutioncount_current_columns = {}
+        
+        for column in possible_columns:
+            
+            for previous_column, previous_n in solutioncount_previous_columns.iteritems():
+                
+                if isColumnValid(column, previous_column, g[i]):
+                    
+                    new_n = previous_n
+                    new_n += solutioncount_current_columns[column] if column in solutioncount_current_columns else 0
+                    
+                    solutioncount_current_columns[column] = new_n
+                    
+        solutioncount_previous_columns = solutioncount_current_columns
+        
+    return sum(solutioncount_previous_columns.values())
                 
     
 def isColumnValid(generatedPostColumn, previousPastColumn, currentColumn):
     for i in range(len(currentColumn)):
-        x00 = previousPastColumn[i]
-        x01 = previousPastColumn[i+1]
-        x10 = generatedPostColumn[i]
-        x11 = generatedPostColumn[i+1]
         
-        if (sum([x00, x01, x10, x11]) == 1) != currentColumn[i]:
+        boxSum = sum(generatedPostColumn[i:i+2]+previousPastColumn[i:i+2])
+        
+        if (boxSum == 1) != currentColumn[i]:
             return False
+        
     return True
 
 print(solution([[True,False,True],[False,True,False],[True,False,True]]))
