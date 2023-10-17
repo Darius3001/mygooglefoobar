@@ -1,8 +1,6 @@
 import numpy as np
 import itertools
 
-
-
 def solution(g):
     # Transpose because columns are smaller
     # matrix will be viewed as list of columns (not rows)
@@ -22,7 +20,6 @@ def solution(g):
         )
         
     return sum(solutioncount_columns.values())
-                
 
 def nextColumnSolutionCount(solutioncount_previous_columns, currentColumn, possible_columns):
     
