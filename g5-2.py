@@ -9,7 +9,7 @@ def solution(g):
     rowlen = len(g)
     columnlen = len(g[0])
     
-    possible_columns = itertools.product([True,False], repeat=columnlen+1)
+    possible_columns = list(itertools.product([True,False], repeat=columnlen+1))
     
     previous_columns = {col:1 for col in possible_columns}
 
@@ -21,7 +21,6 @@ def solution(g):
                     new_n = previous_n
                     new_n += current_columns[column] if column in current_columns else 0
                     current_columns[column] = new_n
-        
         previous_columns = current_columns
         
     return sum(previous_columns.values())
