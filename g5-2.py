@@ -2,8 +2,6 @@ import numpy as np
 import itertools
 
 def solution(g):
-    # Transpose because columns are smaller
-    # matrix will be viewed as list of columns (not rows)
     g = np.array(g).T
     
     rowlen, columnlen = g.shape
